@@ -4,16 +4,19 @@
 
 Rails.application.routes.draw do
 
-  get 'login', to: "authentication#login" #create session in cache if access is valid, send user_details also
+  #TO-DO: Caching support for whole service
+  get 'email_checking', to: "authentication#email_checking"
+  post 'login', to: "authentication#login" #create session in cache if access is valid, send user_details also
   get 'logout', to: "authentication#logout" #delete session in cache
 
-  get "user_details", to: "users#user_details"
+  get "user_details", to: "users#user_record_details"
   post "register_user", to: "users#register" #-> to be handled by UI template itself, on registering, shift to login page
+  post "register_new_tenant_with_users", to: "users#register_new_tenant_with_users" #-> on registering society, register support users and initial user in IDP and DB
   patch "edit_user",   to: "users#edit_user"
   delete "delete_user", to: "users#delete_user" #for specific society applications
   delete "hard_delete_user", to: "users#hard_delete_user" #from our db
   patch "change_password", to: "users#change_password"
-  patch "forgot_password", to: "users#forgot_password"
+  # patch "forgot_password", to: "users#forgot_password" #TO-DO: Implement this
 
 end
 
