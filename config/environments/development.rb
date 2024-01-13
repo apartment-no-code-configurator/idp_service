@@ -23,12 +23,12 @@ Rails.application.configure do
   config.active_record.cache_versioning = false
   #TO-DO: Read url from environment
   config.cache_store = :redis_cache_store, {
-    url: 'redis://default:h6n0qWhhGMbYm1tLr27F3mrEOuKwA8Tz@redis-14965.c305.ap-south-1-1.ec2.cloud.redislabs.com:14965',
+    url: 'redis://default@redis-14965.c305.ap-south-1-1.ec2.cloud.redislabs.com:14965',
     pool_size: ENV.fetch('RAILS_MAX_THREADS') { 20 },
     pool_timeout: 5
   }
-  #redis cloud admin user password - 5B:T%.DuAsjUf'*
-  #redis cloud password - h6n0qWhhGMbYm1tLr27F3mrEOuKwA8Tz
+  #redis cloud admin user password - default'*
+  #redis cloud password - default
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
