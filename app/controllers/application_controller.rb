@@ -10,8 +10,6 @@ class ApplicationController < ActionController::API
 
   attr_accessor :society, :user_details
 
-  before_action :set_society_singletons_and_tenant_model_connection #ideally should be in a middleware
-
   private
 
   def symbolized_params(require_key="")
@@ -22,22 +20,28 @@ class ApplicationController < ActionController::API
     end
   end
 
-  def set_society_singletons_and_tenant_model_connection
+  def set_society_singletons_and_tenant_model_connection_for_ui_requests
     begin
       subdomain_segments = request.subdomain.split("-")
       @society = Society.find_by(link: subdomain_segments.first.to_s)
       # $logger = #TO-DO: Setup up and use logger
 
-      #TO-DO: Get values from environment variables like database.yml
-      TenantModel.establish_connection({adapter: "mysql2",pool: 5, username: "root", password: "Kankroli@e11",socket: "/tmp/mysql.sock", database: "#{society.db_prefix}_db"})
+      tenant_establish_connnection
     rescue
       raise "Society not found"
     end
   end
 
+  def tenant_establish_connnection
+    #TO-DO: Get values from environment variables like database.yml
+    TenantModel.establish_connection({adapter: "mysql2",pool: 5, username: "root", password: "Kankroli@e11",socket: "/tmp/mysql.sock", database: "#{society.db_prefix}_db"})
+  end
+
   def check_if_user_can_access_society
+    @society = Society.find_by(aoa_number: params[:aoa_number])
     aoa_number = society.aoa_number
-    user_details["societies"].pluck("aoa_number").include?(aoa_number) && User.find_by(idp_service_id: user_details["_id"]).id rescue false
+    tenant_establish_connnection
+    user_details["societies"].pluck("aoa_number").include?(aoa_number) && User.find_by(idp_service_id: user_details["_id"].to_s).id rescue false
   end
 
 end

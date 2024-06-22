@@ -9,12 +9,13 @@ Rails.application.routes.draw do
   post 'login', to: "authentication#login" #create session in cache if access is valid, send user_details also
   get 'logout', to: "authentication#logout" #delete session in cache
 
-  get "user_details", to: "users#user_record_details"
+  get "user_details", to: "users#user_record_details" #along with society access details
   post "register_user", to: "users#register" #-> to be handled by UI template itself, on registering, shift to login page
-  post "register_new_tenant_with_users", to: "users#register_new_tenant_with_users" #-> on registering society, register support users and initial user in IDP and DB
+  post "register_new_tenant_with_support_users", to: "users#register_new_tenant_with_support_users" #-> on registering society, register support users and initial user in IDP and DB #TO-DO
+  post "default_admin_user", to: "users#create_default_admin_user"
   patch "edit_user",   to: "users#edit_user"
-  delete "delete_user", to: "users#delete_user" #for specific society applications
-  delete "hard_delete_user", to: "users#hard_delete_user" #from our db
+  delete "delete_user", to: "users#delete_user" #from specific society db and update society access in idp db
+  delete "hard_delete_user", to: "users#hard_delete_user" #from our idp db and society db
   patch "change_password", to: "users#change_password"
   # patch "forgot_password", to: "users#forgot_password" #TO-DO: Implement this
 

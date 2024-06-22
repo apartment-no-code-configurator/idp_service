@@ -9,13 +9,25 @@ class UsersController < AuthenticationController
 
   attr_accessor :user_obj
   def user_record_details
-    @user_obj = UserLib.find(Session.find_by(session_id: ).user_id)
-    render_details
+    render json: {
+      user_details: UserLib.find_user(params[:idp_user_id])
+    }, status: 200
   end
 
-  #TO-DO, other than creating user, add user to respective tenant database -> Do this in one transaction
-  def create_user
+  def register
     @user_obj = UserLib.new(user_creation_params, society).create_user
+    render_details(204)
+  end
+
+  def register_new_tenant_with_support_users
+    UserLib.new(support_user("roshan"), society).create_user("support_user")
+    UserLib.new(support_user("ayyapadas"), society).create_user("support_user")
+    render_details(204)
+  end
+
+  def create_default_admin_user
+    byebug
+    UserLib.new(default_user, society).create_user("default_admin")
     render_details(204)
   end
 
@@ -61,8 +73,8 @@ class UsersController < AuthenticationController
       :last_name,
       :email,
       :phone,
-      :is_active,
-      :password
+      :profile_id,
+      :is_active
     )
   end
 
@@ -83,8 +95,43 @@ class UsersController < AuthenticationController
     if status_code != 204
       render json: user_obj.details_as_json, status: status_code
     else
-      render json: {}, status:status_code
+      render json: {}, status: status_code
     end
+  end
+
+  def support_user(name)
+    #TO-DO: encode password with salt, use a util class for this
+    if name == "roshan"
+      {
+        "telegram_username" => "roshan_basu_7",
+        "first_name" => "Roshan",
+        "last_name" => "Basu",
+        "email" => "roshanbasu7@gmail.com",
+        "password" => "test",
+        "phone" => "9790086117",
+      }
+    else
+      {
+        "telegram_username" => "aybalago",
+        "first_name" => "Ayyapadas",
+        "last_name" => "Balagopal",
+        "password" => "test",
+        "email" => "ayyappadasb@gmail.com",
+        "phone" => "9740931120",
+      }
+    end
+  end
+
+  def default_user
+    #TO-DO: encode password with salt, use a util class for this
+    {
+      "telegram_username" => nil,
+      "first_name" => "default_admin",
+      "last_name" => society.aoa_number,
+      "email" => society.email,
+      "password" => society.password,
+      "phone" => nil,
+    }
   end
 
 end
