@@ -43,6 +43,11 @@ module UserMgmtCrud
       end
     end
 
+    def update_user(data_column, value)
+      user_record.send("#{data_column}=".to_sym, value)
+      user_record.save!
+    end
+
     # def register_support_user(aoa_number)
     #   TenantModel.transaction do
     #     user_record.save!

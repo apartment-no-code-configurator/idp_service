@@ -26,8 +26,9 @@ class UsersController < AuthenticationController
   end
 
   def create_default_admin_user
-    byebug
-    UserLib.new(default_user, society).create_user("default_admin")
+    user_obj = UserLib.new(default_user, society)
+    user_obj.create_user("default_admin")
+    user_obj.update_user("is_default_admin", true)
     render_details(204)
   end
 
