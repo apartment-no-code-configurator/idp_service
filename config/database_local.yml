@@ -8,16 +8,13 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV.fetch("DATABASE_USER") %>
-  password: <%= ENV.fetch("DATABASE_PASSWORD") %>
-  host: <%= ENV['DATABASE_HOST'] %>
-  port: <%= ENV['DATABASE_PORT'] %>
-
-# DATABASE_HOST=apartix-test-db
+  username: root
+  password: Kankroli@e11
+  socket: /tmp/mysql.sock
 
 development:
   <<: *default
-  database: <%= ENV.fetch("DATABASE_NAME") %>
+  database: apartments_db_dev
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -28,4 +25,4 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV.fetch("DATABASE_NAME") %>
+  database: apartments_db_dev_prod
