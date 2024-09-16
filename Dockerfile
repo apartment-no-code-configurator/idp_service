@@ -28,5 +28,5 @@ COPY . /usr/src/idp_service
 EXPOSE 3002
 
 # The command to start the Rails server
-# CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3002"]
-CMD ["bash"]
+CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3002"]
+# CMD ["bash"]
