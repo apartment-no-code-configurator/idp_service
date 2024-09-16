@@ -6,7 +6,8 @@ RUN apt-get update -qq && apt-get install -y \
   build-essential \
   nodejs \
   default-mysql-client \
-  default-libmysqlclient-dev
+  default-libmysqlclient-dev \
+  vim
 
 # Set the working directory inside the container
 WORKDIR /usr/src/idp_service
@@ -28,5 +29,5 @@ COPY . /usr/src/idp_service
 EXPOSE 3002
 
 # The command to start the Rails server
-# CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3002"]
-CMD ["bash"]
+CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3002"]
+# CMD ["bash"]
