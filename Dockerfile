@@ -10,17 +10,17 @@ RUN apt-get update -qq && apt-get install -y \
   vim
 
 # Set the working directory inside the container
-WORKDIR /usr/src/idp_service
+WORKDIR /root/app/idp_service
 
 # Copy the Gemfile and Gemfile.lock to the container
-COPY Gemfile /usr/src/idp_service/Gemfile
-COPY Gemfile.lock /usr/src/idp_service/Gemfile.lock
+COPY Gemfile /root/app/idp_service/Gemfile
+COPY Gemfile.lock /root/app/idp_service/Gemfile.lock
 
 # Install gems using bundler
 RUN bundle install
 
 # Copy the rest of the application code to the container
-COPY . /usr/src/idp_service
+COPY . /root/app/idp_service
 
 # Precompile Rails assets if you are using Rails assets (optional)
 # RUN RAILS_ENV=production bundle exec rake assets:precompile
