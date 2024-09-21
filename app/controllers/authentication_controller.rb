@@ -46,10 +46,13 @@ class AuthenticationController < ApplicationController
   private
 
   def set_user_for_login
-    @user_details = MongoDBAdapter.run_query(:fetch_record, {email: params_email, password: params_password}) rescue nil
-    raise "401, User not found in IDP database" if user_details.blank?
-    raise "500, Duplicate users, please check data for email - #{params_email}" if user_details.count > 1
-    @user_details = user_details.first
+    Rails.logger.info params_email
+    Rails.logger.info params_password
+    Rails.logger.info "-------------------"
+    @user_details = MongoDBAdapter.run_query(:fetch_record, {email: params_email, password: params_password}) #rescue nil
+    raise "401, User not found in IDP database" if @user_details.blank?
+    raise "500, Duplicate users, please check data for email - #{params_email}" if @user_details.count > 1
+    @user_details = @user_details.first
   end
 
   def params_email

@@ -34,13 +34,24 @@ class ApplicationController < ActionController::API
 
   def tenant_establish_connnection
     #TO-DO: Get values from environment variables like database.yml
-    TenantModel.establish_connection({adapter: "mysql2",pool: 5, username: "root", password: "Kankroli@e11",socket: "/tmp/mysql.sock", database: "#{society.db_prefix}_db"})
+  #TO-DO: Get values from environment variables like database.yml
+    database_details = {
+      adapter: 'mysql2', # or 'postgresql', depending on your database
+      host: ENV["DATABASE_HOST"],
+      database: "#{society.db_prefix}_db",
+      username: ENV["DATABASE_USER"],
+      password: ENV["DATABASE_PASSWORD"],
+      port: ENV['DATABASE_PORT']
+    }
+    Rails.logger.info database_details
+    TenantModel.establish_connection(database_details)
   end
 
   def check_if_user_can_access_society
     @society = Society.find_by(aoa_number: params[:aoa_number])
     aoa_number = society.aoa_number
     tenant_establish_connnection
+    Rails.logger.info user_details
     user_details["societies"].pluck("aoa_number").include?(aoa_number) && User.find_by(idp_service_id: user_details["_id"].to_s).id rescue false
   end
 
