@@ -34,7 +34,6 @@ class ApplicationController < ActionController::API
 
   def tenant_establish_connnection
     #TO-DO: Get values from environment variables like database.yml
-  #TO-DO: Get values from environment variables like database.yml
     database_details = {
       adapter: 'mysql2', # or 'postgresql', depending on your database
       host: ENV["DATABASE_HOST"],
@@ -49,10 +48,12 @@ class ApplicationController < ActionController::API
 
   def check_if_user_can_access_society
     @society = Society.find_by(aoa_number: params[:aoa_number])
+  Rails.logger.info @society
+  Rails.logger.info society.aoa_number
     aoa_number = society.aoa_number
     tenant_establish_connnection
     Rails.logger.info user_details
-    user_details["societies"].pluck("aoa_number").include?(aoa_number) && User.find_by(idp_service_id: user_details["_id"].to_s).id rescue false
+    user_details["societies"].pluck("aoa_number").include?(aoa_number) && User.find_by(idp_service_id: user_details["_id"].to_s).id #rescue false
   end
 
 end
