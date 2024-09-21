@@ -34,7 +34,7 @@ class ApplicationController < ActionController::API
 
   def tenant_establish_connnection
     #TO-DO: Get values from environment variables like database.yml
-    TenantModel.establish_connection({adapter: "mysql2",pool: 5, username: "root", password: "Kankroli@e11",socket: "/tmp/mysql.sock", database: "#{society.db_prefix}_db"})
+TenantModel.establish_connection({adapter: "mysql2",pool: 5, username: ENV["DATABASE_USER"], password: ENV["DATABASE_PASSWORD"],socket: ENV["DATABASE_HOST"], database: "#{society.db_prefix}_db"})
   end
 
   def check_if_user_can_access_society
