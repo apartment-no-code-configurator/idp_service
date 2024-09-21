@@ -52,6 +52,13 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
+  config.cache_store = :redis_cache_store, {
+    url: ENV['REDIS_URL'], # Ensure REDIS_URL is set correctly in your environment variables
+    compress: true,
+    compress_threshold: 1024, # Compress entries larger than 1KB
+    expires_in: 1.hour, # Set expiration time for cache entries
+    namespace: 'cache' # Optional: Set a namespace to avoid key collisions
+  }
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
