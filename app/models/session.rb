@@ -29,19 +29,19 @@ class Session < ApplicationRecord
   def self.check_session_access(session_id, session_id_hash)
     #TO-DO: check in cache, session timeout
     #check in cache along with session timeout and if valid, update session id timestamp and return true, else delete entry in cache and return false
-    byebug
+    # byebug
     aoa_number = session_id_hash[""]
     update_session_id(session_id)
   end
 
   def self.delete_session(session_id)
-    byebug
+    # byebug
   end
 
   private
 
   def self.update_session_id(session_id)
-    byebug
+    # byebug
   end
 
 end
