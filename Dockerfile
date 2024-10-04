@@ -29,5 +29,7 @@ COPY . /root/app/idp_service
 EXPOSE 3002
 
 # The command to start the Rails server
+CMD ["git", "config", "--global", "user.email", "'apartixtechnologies@gmail.com'"]
+CMD ["git", "config", "--global", "user.name", "Apartix"]
 CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3002"]
 # CMD ["bash"]
