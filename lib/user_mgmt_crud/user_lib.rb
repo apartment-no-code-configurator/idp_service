@@ -24,6 +24,7 @@ module UserMgmtCrud
 
     def create_user(profile_id="resident")
       ActiveRecord::Base.transaction do
+        user_record.is_active = true
         user_record.save!
         user_idp_record = update_user_record_idp_values(profile_id)
         if user_idp_record["_id"].present?
